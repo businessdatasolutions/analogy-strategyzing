@@ -46,3 +46,10 @@ export async function loadStrategicPairs(): Promise<StrategicPair[]> {
 export function getPairId(pair: StrategicPair): string {
   return `${pair.companyA}-${pair.companyB}`.toLowerCase().replace(/\s+/g, '-')
 }
+
+export const niveauLabels: Record<number, string> = {
+  1: 'Scope & Focus',
+  2: 'Business Model',
+  3: 'Value Chain & AI',
+  4: 'Organization & Culture'
+}

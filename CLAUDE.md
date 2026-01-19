@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Analogy Strategizing is a React-based SPA that guides users through structured analogical reasoning for strategy development. Users explore 26 curated strategic company pairs (e.g., Figma/Adobe, Airbnb/Hilton) and decompose analogies into positive/negative premises and causal mechanisms. The UI is in Dutch.
 
+Based on: Carroll, G. R., & Sørensen, J. B. (2024). Strategy theory using analogy: Rationale, tools and examples. *Strategy Science, 9*(4), 483–498. https://doi.org/10.1287/stsc.2024.0174
+
 ## Development Commands
 
 ```bash
@@ -18,14 +20,15 @@ npm run preview  # Preview production build locally
 ## Architecture
 
 **Routing (React Router, hash-based):**
-- `/` → Home (landing page)
-- `/verkenning` → 10-pair guided questionnaire
+- `/` → Home (landing page with WHY/HOW/WHAT explanation)
+- `/verkenning` → 4-pair guided questionnaire (1 pair per niveau)
 - `/profiel` → User's strategic profile results
 - `/verdieping/:id` → Deep-dive analogy worksheet per pair
 
 **Data Flow:**
 - Strategic pairs loaded from `public/data/strategic-pairs.json` (26 pairs)
-- 10-pair curated subset defined in `src/lib/curated-subset.ts` for main flow
+- Random selection of 4 pairs (1 per niveau) via `src/lib/curated-subset.ts`
+- Users can shuffle to get a different pair within the same niveau
 - User selections and worksheets persisted to localStorage via `src/lib/storage.ts`
 
 **Key Data Structure (StrategicPair):**
@@ -44,21 +47,28 @@ npm run preview  # Preview production build locally
 }
 ```
 
+**Niveau Labels:**
+- Niveau 1: Scope & Focus
+- Niveau 2: Business Model
+- Niveau 3: Value Chain & AI
+- Niveau 4: Organization & Culture
+
 ## Source Structure
 
 ```
 src/
 ├── pages/
-│   ├── Verkenning.tsx    # Questionnaire flow with progress
-│   ├── Profiel.tsx       # Results dashboard
+│   ├── Home.tsx          # Landing page with WHY/HOW/WHAT + academic reference
+│   ├── Verkenning.tsx    # Questionnaire flow with progress + shuffle feature
+│   ├── Profiel.tsx       # Results dashboard grouped by niveau
 │   └── Verdieping.tsx    # Analogy builder worksheet
 ├── components/
-│   ├── PairCard.tsx      # Strategic pair display
+│   ├── PairCard.tsx      # Strategic pair display with niveau badge
 │   └── PositionSelector.tsx  # A/B position selection
 └── lib/
-    ├── strategic-pairs.ts    # Interfaces, data loading
-    ├── storage.ts            # localStorage layer
-    └── curated-subset.ts     # 10-pair subset IDs
+    ├── strategic-pairs.ts    # Interfaces, data loading, niveauLabels
+    ├── storage.ts            # localStorage layer (save/load/remove selections)
+    └── curated-subset.ts     # Random pair selection + getRandomPairByNiveau
 ```
 
 ## Technical Notes
@@ -68,6 +78,7 @@ src/
 - **TypeScript path alias**: `@/*` → `src/*`
 - **Base URL**: `/analogy-strategyzing/` (GitHub Pages deployment)
 - **Styling**: Tailwind CSS with green/purple accent colors for A/B distinction
+- **Shuffle feature**: Users can request a different pair from the same niveau; old selection is removed
 
 ## Deployment
 

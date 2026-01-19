@@ -1,4 +1,4 @@
-import { loadStrategicPairs, type StrategicPair } from './strategic-pairs'
+import { loadStrategicPairs, getPairId, type StrategicPair } from './strategic-pairs'
 
 // Select 4 random pairs (1 per niveau) for masterclass
 // Each session gets a random selection from all available pairs per niveau
@@ -10,6 +10,19 @@ function shuffleArray<T>(array: T[]): T[] {
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled
+}
+
+export async function getRandomPairByNiveau(niveau: number, excludePairIds: string[] = []): Promise<StrategicPair | null> {
+  const allPairs = await loadStrategicPairs()
+
+  const availablePairs = allPairs.filter(pair =>
+    pair.niveau === niveau && !excludePairIds.includes(getPairId(pair))
+  )
+
+  if (availablePairs.length === 0) return null
+
+  const shuffled = shuffleArray(availablePairs)
+  return shuffled[0]
 }
 
 export async function getCuratedPairs(): Promise<StrategicPair[]> {

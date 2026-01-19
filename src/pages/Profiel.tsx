@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { loadSelections } from '../lib/storage'
-import { loadStrategicPairs, type StrategicPair, type UserSelection } from '../lib/strategic-pairs'
+import { loadStrategicPairs, niveauLabels, type StrategicPair, type UserSelection } from '../lib/strategic-pairs'
 
 export default function Profiel() {
   const [selections, setSelections] = useState<UserSelection[]>([])
@@ -103,7 +103,7 @@ export default function Profiel() {
               .map(([niveau, items]) => (
                 <div key={niveau} className="mb-8">
                   <h2 className="text-lg font-semibold text-gray-700 mb-3">
-                    Niveau {niveau}
+                    Niveau {niveau}: {niveauLabels[Number(niveau)]}
                   </h2>
                   <div className="space-y-3">
                     {items.map(({ selection, pair }) => (

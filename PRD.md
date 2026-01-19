@@ -2,8 +2,8 @@
 
 **Author:** Witold ten Hove
 **Date:** 2025-01-19
-**Status:** Draft
-**Version:** 1.0
+**Status:** In Development
+**Version:** 1.1
 **Based on:** Carroll, G.R. & Sørensen, J.B. (2024). "Strategy Theory Using Analogy: Rationale, Tools and Examples." Strategy Science, Vol. 9, No. 4.
 
 ---
@@ -406,17 +406,33 @@ These additions could transform your target's strategy theory from
 
 ### Must Have (P0) - Core Masterclass Functionality
 
+#### REQ-000: Home Page with Methodology Introduction
+
+**Description:** Landing page that explains WHY, HOW, and WHAT of analogical reasoning for strategy.
+
+**Acceptance Criteria:**
+- [x] WHY section: Explains problem with unstructured analogies ("we're the Uber of X")
+- [x] HOW section: 6-step process for structured analogical reasoning
+- [x] WHAT section: Introduction to 26 strategic pairs across 4 niveaus
+- [x] APA citation to Carroll & Sørensen (2024) with DOI link
+- [x] Clear CTA to start the exploration flow
+- [x] Reset button to clear all stored data
+
+---
+
 #### REQ-001: Strategic Pairs Browser
 
 **Description:** Interface for exploring and selecting from 26 curated strategic company pairs.
 
 **Acceptance Criteria:**
-- [ ] Display all 26 strategic pairs from `strategic-pairs.json`
-- [ ] Filter by niveau (complexity level 1-4)
-- [ ] Search by company name, strategy tag, or keyword
-- [ ] Each pair card shows: companies, strategic contrast, dilemma question
-- [ ] Expanded view shows: full strategies, distinguishing element, dimension number
-- [ ] Visual grouping by strategic dimension
+- [x] Display strategic pairs from `strategic-pairs.json`
+- [x] Random selection of 4 pairs (1 per niveau) for each session
+- [x] Each pair card shows: companies, strategic contrast, dilemma question, niveau badge with label
+- [x] User can shuffle to get a different random pair from the same niveau
+- [x] When shuffling, old selection is removed so profile only shows current set
+- [ ] Filter by niveau (complexity level 1-4) - *future enhancement*
+- [ ] Search by company name, strategy tag, or keyword - *future enhancement*
+- [ ] Expanded view shows: full strategies, distinguishing element, dimension number - *future enhancement*
 
 **Data Structure (from strategic-pairs.json):**
 ```typescript
@@ -452,11 +468,11 @@ interface StrategicPair {
 **Description:** Interface for choosing which strategy in a pair the user's company aligns with.
 
 **Acceptance Criteria:**
-- [ ] Side-by-side display of both strategies in selected pair
-- [ ] Clear visual distinction between Company A and Company B approaches
-- [ ] User selects one strategy as their "source" for analogy building
-- [ ] Option to select "hybrid/between" for exploration
-- [ ] Confirmation screen explaining implications of choice
+- [x] Side-by-side display of both strategies in selected pair
+- [x] Clear visual distinction between Company A (green) and Company B (purple) approaches
+- [x] User selects one strategy as their "source" for analogy building
+- [x] Option to select "hybrid/between" for exploration
+- [ ] Confirmation screen explaining implications of choice - *future enhancement*
 - [ ] Selected strategy becomes context for subsequent premise building
 
 ---

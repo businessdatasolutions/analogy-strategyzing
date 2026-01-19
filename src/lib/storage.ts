@@ -45,6 +45,14 @@ export function saveSelection(pairId: string, position: Position): void {
   localStorage.setItem(STORAGE_KEY_SELECTIONS, JSON.stringify(selections))
 }
 
+export function removeSelection(pairId: string): void {
+  if (typeof window === 'undefined') return
+
+  const selections = loadSelections()
+  const filtered = selections.filter(s => s.pairId !== pairId)
+  localStorage.setItem(STORAGE_KEY_SELECTIONS, JSON.stringify(filtered))
+}
+
 export function clearSelections(): void {
   if (typeof window === 'undefined') return
   localStorage.removeItem(STORAGE_KEY_SELECTIONS)

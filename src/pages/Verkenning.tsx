@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { getCuratedPairs } from '../lib/curated-subset'
-import { loadSelections, saveSelection } from '../lib/storage'
+import { getCuratedPairs, getRandomPairByNiveau } from '../lib/curated-subset'
+import { getPairId, niveauLabels } from '../lib/strategic-pairs'
+import { loadSelections, saveSelection, removeSelection } from '../lib/storage'
 import type { StrategicPair, Position } from '../lib/strategic-pairs'
 import PairCard from '../components/PairCard'
 import PositionSelector from '../components/PositionSelector'
@@ -59,6 +60,32 @@ export default function Verkenning() {
     }
   }
 
+  const handleShuffle = async () => {
+    if (!currentPair) return
+
+    const oldPairId = getPairId(currentPair)
+
+    // Get IDs of all currently shown pairs to exclude them
+    const excludeIds = pairs.map(p => getPairId(p))
+
+    const newPair = await getRandomPairByNiveau(currentPair.niveau, excludeIds)
+    if (newPair) {
+      // Remove the old selection from storage and state
+      removeSelection(oldPairId)
+      setSelections(prev => {
+        const updated = { ...prev }
+        delete updated[oldPairId]
+        return updated
+      })
+
+      setPairs(prev => {
+        const updated = [...prev]
+        updated[currentIndex] = newPair
+        return updated
+      })
+    }
+  }
+
   if (pairs.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -94,9 +121,22 @@ export default function Verkenning() {
             <PairCard pair={currentPair} />
             <PositionSelector
               pair={currentPair}
-              selectedPosition={selections[`${currentPair.companyA}-${currentPair.companyB}`.toLowerCase().replace(/\s+/g, '-')]}
+              selectedPosition={selections[getPairId(currentPair)]}
               onSelect={handleSelect}
             />
+
+            {/* Shuffle button */}
+            <div className="mt-4 text-center">
+              <button
+                onClick={handleShuffle}
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Ander paar ({niveauLabels[currentPair.niveau]})
+              </button>
+            </div>
           </>
         )}
 

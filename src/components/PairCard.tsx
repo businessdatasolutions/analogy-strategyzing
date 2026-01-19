@@ -1,4 +1,4 @@
-import type { StrategicPair } from '../lib/strategic-pairs'
+import { niveauLabels, type StrategicPair } from '../lib/strategic-pairs'
 
 interface PairCardProps {
   pair: StrategicPair
@@ -27,7 +27,7 @@ export default function PairCard({ pair }: PairCardProps) {
       {/* Niveau badge */}
       <div className="mt-4 flex justify-center">
         <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full">
-          Niveau {pair.niveau}
+          Niveau {pair.niveau}: {niveauLabels[pair.niveau]}
         </span>
       </div>
     </div>
