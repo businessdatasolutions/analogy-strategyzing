@@ -40,24 +40,6 @@ export default function Profiel() {
     return 'Tussenin'
   }
 
-  const getPatternSummary = (): string => {
-    if (selections.length === 0) return ''
-
-    const aCount = selections.filter(s => s.position === 'A').length
-    const bCount = selections.filter(s => s.position === 'B').length
-    const betweenCount = selections.filter(s => s.position === 'between').length
-
-    if (betweenCount > selections.length / 2) {
-      return 'Je neigt naar gebalanceerde posities - je zoekt vaak het midden tussen extremen.'
-    }
-    if (aCount > bCount * 1.5) {
-      return 'Je neigt naar de linker strategieën - vaak gericht op openheid, schaal en platform-denken.'
-    }
-    if (bCount > aCount * 1.5) {
-      return 'Je neigt naar de rechter strategieën - vaak gericht op controle, kwaliteit en differentiatie.'
-    }
-    return 'Je keuzes zijn divers - je past je strategie aan per situatie.'
-  }
 
   if (pairs.length === 0) {
     return (
@@ -92,11 +74,6 @@ export default function Profiel() {
           </div>
         ) : (
           <>
-            {/* Pattern summary */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-              <p className="text-blue-800">{getPatternSummary()}</p>
-            </div>
-
             {/* Selections by niveau */}
             {Object.entries(selectionsByNiveau)
               .sort(([a], [b]) => Number(a) - Number(b))
